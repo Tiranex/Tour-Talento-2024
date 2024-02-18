@@ -70,7 +70,8 @@ function f(yprime, y, t){
 
 // Parameters
 var delta_t = 0.0001
-const n = 2000
+var time = 20
+const n = time/delta_t
 
 function runge_Kutta(t, y, f, delta_t){
     
@@ -83,7 +84,7 @@ function runge_Kutta(t, y, f, delta_t){
     k1 = const_multiplication(delta_t, k1)
     // K2 = f(t + delta_t/2, (p1, p2, p3) + delta_t/2*k1)
     f(k2, vector_sum(y, const_multiplication(1/2, k1)))
-    console.log(vector_sum(y, const_multiplication(1/2, k1)))
+    
     k2 = const_multiplication(delta_t, k2)
     // K3 = f(t + delta_t/2, (p1, p2, p3) + delta_t/2*k2)
     f(k3, vector_sum(y, const_multiplication(1/2, k2)))
@@ -111,6 +112,33 @@ function integrate(f, t0, y0, tend, h){
     
 }
 
+function animation(){
+    
+    let [T, Y] = integrate(f, 0, y, 10, delta_t)
+    console.log(Y.length)
+    let i = 0
+    let interval = setInterval(function(){
+        if(i < n){
+            if(i % 300 == 0){
+                nodes[0].x = coordinates_to_canvas(Y[i][0], Y[i][1]).x
+                nodes[0].y = coordinates_to_canvas(Y[i][0], Y[i][1]).y
+                nodes[1].x = coordinates_to_canvas(Y[i][4], Y[i][5]).x
+                nodes[1].y = coordinates_to_canvas(Y[i][4], Y[i][5]).y
+                nodes[2].x = coordinates_to_canvas(Y[i][8], Y[i][9]).x
+                nodes[2].y = coordinates_to_canvas(Y[i][8], Y[i][9]).y
+                console.log(nodes[0].x, nodes[0].y, nodes[1].x, nodes[1].y, nodes[2].x, nodes[2].y)
+                draw()
+            }
+            i++
+        } else {
+            clearInterval(interval)
+        }
+    }, 1)
+}
+
+function coordinates_to_canvas(x, y){
+    return {x: 1.25*(x + canvas.width/2), y: 1.25*(y + canvas.height/2)}
+}
 
 
     
