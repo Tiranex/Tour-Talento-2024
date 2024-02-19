@@ -13,7 +13,7 @@ let drag = false;
 
 function resize(){
     canvas.width = window.innerWidth;
-    canvas.height = window.innerWidth * (aspect_ratio)
+    canvas.height = window.innerHeight;
     draw();
 }
 
