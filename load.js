@@ -1,3 +1,9 @@
+// Parameters
+const aspect_ratio = 9/16
+const grid_size = 50
+const axis_length = 20
+
+
 const canvas  =document.getElementById('canvas');
 const context = canvas.getContext('2d');
 
@@ -7,7 +13,7 @@ let drag = false;
 
 function resize(){
     canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.height = window.innerWidth * (aspect_ratio)
     draw();
 }
 
@@ -17,7 +23,7 @@ resize();
 
 function draw(){
     context.clearRect(0, 0, canvas.width, canvas.height);
-
+    cartesian_draw();
     // Draw nodes
     for(let i=0; i<nodes.length; i++){
         context.beginPath();
@@ -28,6 +34,95 @@ function draw(){
         context.closePath();
     }
     
+}
+
+function cartesian_draw(){
+    context.fillStyle = "black";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.strokeStyle = "white";
+    context.lineWidth =  1.5;
+
+    // Draw x-axis
+    context.beginPath();
+    context.moveTo(0, canvas.height/2);
+    context.lineTo(canvas.width, canvas.height/2);
+    context.stroke();
+    context.closePath();
+
+    // Draw y-axis
+    context.beginPath();
+    context.moveTo(canvas.width/2, 0);
+    context.lineTo(canvas.width/2, canvas.height);
+    context.stroke();
+    context.closePath();
+    
+    // Draw grid
+    context.strokeStyle = "gray";
+    context.lineWidth = 0.5;
+    for(let i=0; i<canvas.width/2; i+=grid_size){
+        context.beginPath();
+        context.moveTo(canvas.width/2+ i, 0);
+        context.lineTo(canvas.width/2 + i, canvas.height);
+        context.stroke();
+        context.closePath();
+
+        context.beginPath();
+        context.moveTo(canvas.width/2- i, 0);
+        context.lineTo(canvas.width/2 - i, canvas.height);
+        context.stroke();
+    }
+    for(let j=0; j<canvas.height; j+=grid_size){
+        context.beginPath();
+        context.moveTo(0, canvas.height/2+ j);
+        context.lineTo(canvas.width, canvas.height/2 + j);
+        context.stroke();
+        context.closePath();
+
+        context.beginPath();
+        context.moveTo(0, canvas.height/2- j);
+        context.lineTo(canvas.width, canvas.height/2 - j);
+        context.stroke();
+        context.closePath();
+    }
+
+    // Draw axis labels
+    context.fillStyle = "white";
+    context.lineWidth = 1.25;
+    context.font = "15px Arial";
+    context.textAlign = "center";
+    context.fillStyle = "gray";
+    for(let i=0; i<canvas.width/2; i+=grid_size){
+        context.beginPath();
+        context.moveTo(canvas.width/2+ i, canvas.height/2 -axis_length);
+        context.lineTo(canvas.width/2 + i, canvas.height/2 + axis_length);
+        context.stroke();
+        context.closePath();
+
+        context.beginPath();
+        context.moveTo(canvas.width/2- i, canvas.height/2 - axis_length);
+        context.lineTo(canvas.width/2 - i, canvas.height/2 + axis_length);
+        context.stroke();
+        context.closePath();
+
+        // Draw text
+        if(i != 0){
+            context.fillText(i/grid_size, canvas.width/2 + i, canvas.height/2 + 2*axis_length)
+            context.fillText(-i/grid_size, canvas.width/2 - i, canvas.height/2 + 2*axis_length)
+        }
+    }
+    for(let j=0; j<canvas.height; j+=grid_size){
+        context.beginPath();
+        context.moveTo(canvas.width/2 -axis_length, canvas.height/2+ j);
+        context.lineTo(canvas.width/2 + axis_length, canvas.height/2 + j);
+        context.stroke();
+        context.closePath();
+
+        context.beginPath();
+        context.moveTo(canvas.width/2 - axis_length, canvas.height/2- j);
+        context.lineTo(canvas.width/2 + axis_length, canvas.height/2 - j);
+        context.stroke();
+    }
+
 }
 
 canvas.addEventListener('mousedown', function(e){
