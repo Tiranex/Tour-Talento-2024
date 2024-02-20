@@ -16,6 +16,28 @@ const table_3_2 = document.getElementById("table_3_2");
 const table_3_3 = document.getElementById("table_3_3");
 const table_3_4 = document.getElementById("table_3_4");
 
+// Other inputs
+const select_trajectory = document.getElementById("select_trajectory");
+select_trajectory.addEventListener("change", function() {
+    clearInterval(current_animation);
+    current_trajectory=[];
+    current_animation = reproduce(select_trajectory.selectedIndex);
+});
+
+const trajectory_enable_input =  document.getElementById("trajectory_enable");
+let trajectory_enabled = true;
+trajectory_enable_input.addEventListener("change", function() {
+    trajectory_enabled=trajectory_enable_input.checked
+    current_trajectory=[];
+})
+
+const velocity_enable_input =  document.getElementById("velocity_enable");
+let velocity_field_enabled = false;
+velocity_enable_input.addEventListener("change", function() {
+    velocity_field_enabled=velocity_enable_input.checked
+})
+
+
 function load_table(y0) {
     table_1_1.value = y0[0];
     table_1_2.value = y0[1];

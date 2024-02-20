@@ -1,3 +1,6 @@
+// Particle colors
+const colors = {p1: "red", p2: "blue", p3: "green"}
+
 // Parameters
 const grid_size = 100
 const axis_length = 20
@@ -8,6 +11,8 @@ const context = canvas.getContext('2d');
 
 var nodes = [];
 var selected_node = -1;
+var current_trajectory = [];
+var current_solution = [];
 let drag = false;
 
 function resize(){
@@ -16,13 +21,11 @@ function resize(){
     draw();
 }
 
-window.onresize = resize;
-resize();
-
-
 function draw(){
     context.clearRect(0, 0, canvas.width, canvas.height);
     cartesian_draw();
+    trajectory_draw();
+    velocity_field_draw();
     // Draw nodes
     for(let i=0; i<nodes.length; i++){
         context.beginPath();
@@ -30,11 +33,54 @@ function draw(){
         context.arc(cartesian.x, cartesian.y, nodes[i].radius, 0, 2 * Math.PI);
         context.fillStyle = nodes[i].color;
         context.fill();
-        context.stroke();
         context.closePath();
     }
     
 }
+
+function trajectory_draw(){
+    if (!trajectory_enabled)
+        return;
+
+    function one_trajectory_draw(y, y_next, color){
+        context.beginPath();
+        let cartesian = cartesian_to_canvas(y[0], y[1]);
+        context.moveTo(cartesian.x, cartesian.y);
+        cartesian = cartesian_to_canvas(y_next[0], y_next[1]);
+        context.lineTo(cartesian.x, cartesian.y);
+        context.strokeStyle = color;
+        context.lineWidth = 2;
+        context.stroke();
+        context.closePath();
+    }
+    for(let i=0; i<current_trajectory.length-1; i++){
+        one_trajectory_draw([current_trajectory[i][0], current_trajectory[i][1]], [current_trajectory[i+1][0], current_trajectory[i+1][1]], colors.p1);
+        one_trajectory_draw([current_trajectory[i][4], current_trajectory[i][5]], [current_trajectory[i+1][4], current_trajectory[i+1][5]], colors.p2);
+        one_trajectory_draw([current_trajectory[i][8], current_trajectory[i][9]], [current_trajectory[i+1][8], current_trajectory[i+1][9]], colors.p3);    
+    }
+}
+
+function velocity_field_draw(){
+    if(!velocity_field_enabled)
+        return;
+
+    const increase_size = 1;
+    function one_velocity_draw(y, v, color){
+        context.beginPath();
+        let cartesian = cartesian_to_canvas(y[0], y[1]);
+        context.moveTo(cartesian.x, cartesian.y);
+        cartesian = cartesian_to_canvas(y[0] + v[0]*increase_size, y[1] + v[1]*increase_size);
+        context.lineTo(cartesian.x, cartesian.y);
+        context.strokeStyle = color;
+        context.stroke();
+        context.closePath();
+    }
+        
+    one_velocity_draw([current_solution[0], current_solution[1]], [current_solution[2], current_solution[3]], "white");
+    one_velocity_draw([current_solution[4], current_solution[5]], [current_solution[6], current_solution[7]], "white");
+    one_velocity_draw([current_solution[8], current_solution[9]], [current_solution[10], current_solution[11]], "white");
+
+}    
 
 function cartesian_draw(){
     context.fillStyle = "black";
@@ -125,25 +171,7 @@ function cartesian_draw(){
 
 }
 
-canvas.addEventListener('mousedown', function(e){
-    selected_node = find_nearest_node(e);
-})
 
-canvas.addEventListener('mousemove', function(e){
-    if(selected_node != -1){
-        drag = true;
-        let canvas_coord = canvas_to_cartesian(e.clientX, e.clientY);
-        nodes[selected_node].x = canvas_coord.x;
-        nodes[selected_node].y= canvas_coord.y;
-        draw();
-    }
-})
-
-canvas.addEventListener("mouseup", function(e){
-    drag=false;
-    selected_node = -1;
-    draw();
-})
 
 function find_nearest_node(e){
     // Check for nearest node
@@ -173,24 +201,44 @@ function clear(){
     draw();
 }
 
+canvas.addEventListener('mousedown', function(e){
+    selected_node = find_nearest_node(e);
+})
+
+canvas.addEventListener('mousemove', function(e){
+    if(selected_node != -1){
+        drag = true;
+        let canvas_coord = canvas_to_cartesian(e.clientX, e.clientY);
+        nodes[selected_node].x = canvas_coord.x;
+        nodes[selected_node].y= canvas_coord.y;
+        draw();
+    }
+})
+
+canvas.addEventListener("mouseup", function(e){
+    drag=false;
+    selected_node = -1;
+    draw();
+})
+
 nodes= [
     {
-        x: -1,
-        y: 1.25,
-        radius: 10,
-        color: "red"
+        x: 0,
+        y: 0,
+        radius: 12,
+        color: colors.p1
     },
     {
-        x: 1.2,
-        y: 3,
-        radius: 10,
-        color: "blue"
+        x: 0,
+        y: 0,
+        radius: 12,
+        color: colors.p2
     },
     {
-        x: 4,
-        y: 2,
-        radius: 10,
-        color: "green"
+        x: 0,
+        y: 0,
+        radius: 12,
+        color: colors.p3
     }
 ]
 
@@ -203,4 +251,6 @@ function canvas_to_cartesian(x, y){
 }
 
 
+window.onresize = resize;
+resize();
 draw();

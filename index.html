@@ -86,10 +86,10 @@
             </table>
 
             
-            <select>
+            <select size="8" id ="select_trajectory">
                 <option value="option1">Ovals with flourishes</option>
-                <option value="option2">Option 2</option>
-                <option value="option3">Option 3</option>
+                <option value="option2">Oval, catface, and starship</option>
+                <option value="option3">Skinny Pineaple</option>
                 <option value="option4">Option 4</option>
                 <option value="option5">Option 5</option>
                 <option value="option6">Option 6</option>
@@ -102,13 +102,17 @@
             <h3>Options</h3>
             <div id="options">
                 <checkbox>
-                    <input type="checkbox" id="option1" name="option1" value="option1">
-                    <label for="option1">Option 1</label>
+                    <input checked type="checkbox" id="trajectory_enable" name="option1" value="option1">
+                    <label for="option1">Trajectory</label>
                 </checkbox>
                 <checkbox>
-                    <input type="checkbox" id="option2" name="option2" value="option2">
-                    <label for="option2">Option 2</label>
+                    <input type="checkbox" id="velocity_enable" name="option2" value="option2">
+                    <label for="option2">Velocity</label>
                 </checkbox>
+                <div class="slidecontainer">
+                  <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+                </div>
+                
             </div>
         </div>
     </nav>

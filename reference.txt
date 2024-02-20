@@ -20,3 +20,9 @@ https://javalab.org/en/three_body_problem_en/
         const dv3 = vector_sum(term_1, term_2)
         return [dv1, dv2, dv3]
     }
+
+// A dd speed dependency 
+// ADd logo in the bottom or something simple
+// Increase grid_size
+// Add more problems
+// cqd
