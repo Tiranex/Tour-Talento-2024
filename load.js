@@ -1,6 +1,5 @@
 // Parameters
-const aspect_ratio = 9/16
-const grid_size = 50
+const grid_size = 100
 const axis_length = 20
 
 
@@ -27,7 +26,8 @@ function draw(){
     // Draw nodes
     for(let i=0; i<nodes.length; i++){
         context.beginPath();
-        context.arc(nodes[i].x, nodes[i].y, nodes[i].radius, 0, 2 * Math.PI);
+        let cartesian = cartesian_to_canvas(nodes[i].x, nodes[i].y);
+        context.arc(cartesian.x, cartesian.y, nodes[i].radius, 0, 2 * Math.PI);
         context.fillStyle = nodes[i].color;
         context.fill();
         context.stroke();
@@ -132,8 +132,9 @@ canvas.addEventListener('mousedown', function(e){
 canvas.addEventListener('mousemove', function(e){
     if(selected_node != -1){
         drag = true;
-        nodes[selected_node].x = e.clientX;
-        nodes[selected_node].y=e.clientY;
+        let canvas_coord = canvas_to_cartesian(e.clientX, e.clientY);
+        nodes[selected_node].x = canvas_coord.x;
+        nodes[selected_node].y= canvas_coord.y;
         draw();
     }
 })
@@ -146,8 +147,9 @@ canvas.addEventListener("mouseup", function(e){
 
 function find_nearest_node(e){
     // Check for nearest node
+    let canvas_coord = canvas_to_cartesian(e.clientX, e.clientY);
     for(let i=0; i<nodes.length; i++){
-        if(Math.abs(e.clientX - nodes[i].x) < 30 && Math.abs(e.clientY - nodes[i].y) < 30){
+        if(Math.abs(canvas_coord.x - nodes[i].x) < 0.25 && Math.abs(canvas_coord.y - nodes[i].y) < 0.25){
             return i;
         }
     }
@@ -173,24 +175,32 @@ function clear(){
 
 nodes= [
     {
-        x: 700,
-        y: 500,
+        x: -1,
+        y: 1.25,
         radius: 10,
         color: "red"
     },
     {
-        x: 900,
-        y: 500,
+        x: 1.2,
+        y: 3,
         radius: 10,
         color: "blue"
     },
     {
-        x: 800,
-        y: 500,
+        x: 4,
+        y: 2,
         radius: 10,
         color: "green"
     }
 ]
+
+function cartesian_to_canvas(x, y){
+    return {x: canvas.width/2 + x*grid_size, y: canvas.height/2 - y*grid_size}
+}
+
+function canvas_to_cartesian(x, y){
+    return {x: (x - canvas.width/2)/grid_size, y: (canvas.height/2 - y)/grid_size}
+}
 
 
 draw();

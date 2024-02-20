@@ -112,21 +112,22 @@ function integrate(f, t0, y0, tend, h){
     
 }
 
-function animation(){
-    
+function animation(){   
     let [T, Y] = integrate(f, 0, y, 10, delta_t)
     console.log(Y.length)
     let i = 0
+
     let interval = setInterval(function(){
         if(i < n){
             if(i % 300 == 0){
-                nodes[0].x = coordinates_to_canvas(Y[i][0], Y[i][1]).x
-                nodes[0].y = coordinates_to_canvas(Y[i][0], Y[i][1]).y
-                nodes[1].x = coordinates_to_canvas(Y[i][4], Y[i][5]).x
-                nodes[1].y = coordinates_to_canvas(Y[i][4], Y[i][5]).y
-                nodes[2].x = coordinates_to_canvas(Y[i][8], Y[i][9]).x
-                nodes[2].y = coordinates_to_canvas(Y[i][8], Y[i][9]).y
-                console.log(nodes[0].x, nodes[0].y, nodes[1].x, nodes[1].y, nodes[2].x, nodes[2].y)
+                nodes[0].x = Y[i][0]
+                nodes[0].y = Y[i][1]
+                
+                nodes[1].x = Y[i][4]
+                nodes[1].y = Y[i][5]
+
+                nodes[2].x = Y[i][8]
+                nodes[2].y = Y[i][9]
                 draw()
             }
             i++
@@ -136,9 +137,8 @@ function animation(){
     }, 1)
 }
 
-function coordinates_to_canvas(x, y){
-    return {x: 1.25*(x + canvas.width/2), y: 1.25*(y + canvas.height/2)}
-}
 
-
+// Load JSON file
+const initial_conditions = JSON.parse(data)
+console.log(initial_conditions)
     
