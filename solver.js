@@ -141,4 +141,18 @@ function animation(){
 // Load JSON file
 const initial_conditions = JSON.parse(data)
 console.log(initial_conditions)
+// Read the JSON file
+fs.readFile('initial_condition.json', 'utf8', (err, data) => {
+    if (err) {
+        console.error(err);
+        return;
+    }
+
+    // Parse the JSON data
+    const initial_conditions = JSON.parse(data);
+    console.log(initial_conditions);
+
+    // Continue with your code here
+    // ...
+});
     
