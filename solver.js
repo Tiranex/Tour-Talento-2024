@@ -125,6 +125,8 @@ function integrate(f, t0, y0, tend, h){
 
 function animation(y, period){   
     let [T, Y] = integrate(f, 0, y, period, delta_t)
+
+    console.log("Solution: ", Y)
     let i = 0
     const trajectory_length = parseInt(Y.length/time_step) + 1;
     current_trajectory.push(Y[0]);
@@ -175,7 +177,7 @@ fetch("./initial_conditions.json")
                        console.error("Unable to fetch data:", error));
 
 // Parameters
-var delta_t = 0.0001
+var delta_t = 0.0001;
 var time_step=150;
 var time = 20
 const mass = {m_1: 1, m_2: 1, m_3: 1}

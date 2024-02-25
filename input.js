@@ -37,7 +37,16 @@ velocity_enable_input.addEventListener("change", function() {
     velocity_field_enabled=velocity_enable_input.checked
 })
 
+const speed_selector = document.getElementById("speed_selector");
+speed_selector.addEventListener("change", function() {
+    time_step = parseInt(speed_selector.value);
+})
 
+
+/**
+ * Loads the values from an array into a table.
+ * @param {number[]} y0 - The array containing the values to be loaded into the table.
+ */
 function load_table(y0) {
     table_1_1.value = y0[0];
     table_1_2.value = y0[1];
@@ -55,6 +64,10 @@ function load_table(y0) {
     table_3_4.value = y0[11];
 }
 
+/**
+ * Retrieves the values from the table inputs and returns them as an array of numbers.
+ * @returns {number[]} An array of numbers representing the values from the table inputs.
+ */
 function get_table() {
     return [
         parseFloat(table_1_1.value),

@@ -1,28 +1,5 @@
 https://es.wikipedia.org/wiki/M%C3%A9todo_de_Runge-Kutta
 https://betterprogramming.pub/2-d-three-body-problem-simulation-made-simpler-with-python-40d74217a42a
 https://es.wikipedia.org/wiki/Ley_de_gravitaci%C3%B3n_universal
-
 https://javalab.org/en/three_body_problem_en/
 
-    function f(t, p1,p2,p3){
-        
-        // Equation 1
-        let term_1 = const_multiplication(mass.m_2/module(vector_substraction(p2,p1))**3, vector_substraction(p2, p1))
-        let term_2 = const_multiplication(mass.m_3/module(vector_substraction(p3,p1))**3, vector_substraction(p3, p1))
-        const dv1 = vector_sum(term_1, term_2)
-        // Equation 2
-        term_1 = const_multiplication(mass.m_1/module(vector_substraction(p1,p2))**3, vector_substraction(p1, p2))
-        term_2 = const_multiplication(mass.m_3/module(vector_substraction(p3,p2))**3, vector_substraction(p3, p2))
-        const dv2 = vector_sum(term_1, term_2)
-        // Equation 3
-        term_1 = const_multiplication(mass.m_1/module(vector_substraction(p1,p3))**3, vector_substraction(p1, p3))
-        term_2 = const_multiplication(mass.m_2/module(vector_substraction(p2,p3))**3, vector_substraction(p2, p3))
-        const dv3 = vector_sum(term_1, term_2)
-        return [dv1, dv2, dv3]
-    }
-
-// A dd speed dependency 
-// ADd logo in the bottom or something simple
-// Increase grid_size
-// Add more problems
-// cqd

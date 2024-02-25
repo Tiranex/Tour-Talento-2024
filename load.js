@@ -15,12 +15,19 @@ var current_trajectory = [];
 var current_solution = [];
 let drag = false;
 
+/**
+ * Resizes the canvas to match the window dimensions and triggers a redraw.
+ */
 function resize(){
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     draw();
 }
 
+
+/**
+ * Draws the canvas, cartesian coordinates, trajectory, velocity field, and nodes.
+ */
 function draw(){
     context.clearRect(0, 0, canvas.width, canvas.height);
     cartesian_draw();
@@ -38,6 +45,9 @@ function draw(){
     
 }
 
+/**
+ * Draws the trajectory on the canvas.
+ */
 function trajectory_draw(){
     if (!trajectory_enabled)
         return;
@@ -60,6 +70,9 @@ function trajectory_draw(){
     }
 }
 
+/**
+ * Draws the velocity field on the canvas.
+ */
 function velocity_field_draw(){
     if(!velocity_field_enabled)
         return;
@@ -82,6 +95,9 @@ function velocity_field_draw(){
 
 }    
 
+/**
+ * Draws a Cartesian grid on the canvas.
+ */
 function cartesian_draw(){
     context.fillStyle = "black";
     context.fillRect(0, 0, canvas.width, canvas.height);
@@ -173,6 +189,11 @@ function cartesian_draw(){
 
 
 
+/**
+ * Finds the nearest node to the given coordinates on the canvas.
+ * @param {MouseEvent} e - The mouse event object.
+ * @returns {number} - The index of the nearest node, or -1 if no node is found.
+ */
 function find_nearest_node(e){
     // Check for nearest node
     let canvas_coord = canvas_to_cartesian(e.clientX, e.clientY);
@@ -195,6 +216,9 @@ function check_edge(node_1, selected_node){
 }
 
 
+/**
+ * Clears the nodes and edges arrays and redraws the graph.
+ */
 function clear(){
     nodes = [];
     edges = [];
@@ -221,6 +245,28 @@ canvas.addEventListener("mouseup", function(e){
     draw();
 })
 
+
+
+/**
+ * Converts cartesian coordinates to canvas coordinates.
+ * @param {number} x - The x-coordinate in cartesian system.
+ * @param {number} y - The y-coordinate in cartesian system.
+ * @returns {Object} - The converted coordinates in canvas system.
+ */
+function cartesian_to_canvas(x, y){
+    return {x: canvas.width/2 + x*grid_size, y: canvas.height/2 - y*grid_size}
+}
+
+/**
+ * Converts canvas coordinates to cartesian coordinates.
+ * @param {number} x - The x-coordinate on the canvas.
+ * @param {number} y - The y-coordinate on the canvas.
+ * @returns {Object} - The converted cartesian coordinates.
+ */
+function canvas_to_cartesian(x, y){
+    return {x: (x - canvas.width/2)/grid_size, y: (canvas.height/2 - y)/grid_size}
+}
+
 nodes= [
     {
         x: 0,
@@ -241,15 +287,6 @@ nodes= [
         color: colors.p3
     }
 ]
-
-function cartesian_to_canvas(x, y){
-    return {x: canvas.width/2 + x*grid_size, y: canvas.height/2 - y*grid_size}
-}
-
-function canvas_to_cartesian(x, y){
-    return {x: (x - canvas.width/2)/grid_size, y: (canvas.height/2 - y)/grid_size}
-}
-
 
 window.onresize = resize;
 resize();
