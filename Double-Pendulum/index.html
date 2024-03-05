@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script defer type="text/javascript" src="main.js"></script>
+    <title>Péndulo Doble</title>
+</head>
+<body>
+    <div id="wrapper">
+        <canvas id="canvas" width="800" height="800"></canvas>
+        
+        <div id="controls">
+            <div id="inputs">
+                <div class="input">
+                    <label for="m1">Masa 1:</label>
+                    <input type="number" id="m1" value="1">
+                </div>
+                <div class="input">
+                    <label for="m2">Masa 2:</label>
+                    <input type="number" id="m2" value="1">
+                </div>
+                <div class="input">
+                    <label for="l1">Longitud 1:</label>
+                    <input type="number" id="l1" value="100">
+                </div>
+                <div class="input">
+                    <label for="l2">Longitud 2:</label>
+                    <input type="number" id="l2" value="100">
+                </div>
+                <div class="input">
+                    <label for="a1">Ángulo 1:</label>
+                    <input type="number" id="a1" value="0">
+                </div>
+                <div class="input">
+                    <label for="a2">Ángulo 2:</label>
+                    <input type="number" id="a2" value="0">
+                </div>
+                <div class="input">
+                    <label for="g">Gravedad:</label>
+                    <input type="number" id="g" value="9.81">
+                </div>
+            </div>
+            <div id="buttons">
+                <button id="start">Iniciar</button>
+                <button id="stop">Detener</button>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>

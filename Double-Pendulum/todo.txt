@@ -1,0 +1,12 @@
+Connect all inputs
+go reset  buttons
+add another pendulum
+add explanation below
+add trajectory trail
+drag and drop
+add initial condition in degrees another tab
+add loading screen
+reset the turn on the AI APP.
+implement llm app la del lenguaje
+lorentz atractor
+improve 3 body
