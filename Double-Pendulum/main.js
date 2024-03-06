@@ -9,6 +9,12 @@ const bar_color = "gray";
 const circle_color = "blue";
 const circle_radius = 20;
 
+let trajectory1 = [];
+let trajectory2 = [];
+let draw_trajectory1 = true;
+let draw_trajectory2 = true;
+const max_trajectory_length = 100;
+
 let end = false;
 
 let pos = [[Math.random() * 3.5 - 1.75, Math.random() * 3.5 - 1.75], [Math.random() * 3.5 - 1.75, Math.random() * 3.5 - 1.75]]
@@ -46,6 +52,15 @@ function draw_axis_labels(){
         context.fillText(i, canvas.width/2 + i*min/4, canvas.height - 20);
     }
 }
+function draw_variables() {
+    context.font = "15px Montserrat";
+    context.fillStyle = "white";
+    context.fillText(`θ1: ${(y[0]*180 / Math.PI).toFixed(2)}`, canvas.width - 80, 30);
+    context.fillText(`θ2: ${(y[1]*180 / Math.PI).toFixed(2)}`, canvas.width - 80, 50);
+    context.fillText(`ω1: ${(y[2]*180 / Math.PI).toFixed(2)}`, canvas.width - 80, 70);
+    context.fillText(`ω2: ${(y[3]*180 / Math.PI).toFixed(2)}`, canvas.width - 80, 90);
+}
+
 function draw_elements(){
     // Lines
     context.strokeStyle = bar_color;
@@ -73,18 +88,55 @@ function draw_elements(){
     context.arc(...cartesian_to_canvas(pos[1][0], pos[1][1]), circle_radius, 0, 2*Math.PI);
     context.fill();
     context.closePath();
+
+    // Trajectory
+    if(draw_trajectory1) {
+        for(let i = 0; i<trajectory1.length; i++){
+            context.fillStyle = circle_color;
+            context.beginPath();
+            context.arc(...cartesian_to_canvas(trajectory1[i][0], trajectory1[i][1]), 5, 0, 2*Math.PI);
+            context.fill();
+            context.closePath();
+        }
+    }
+    
+    if(draw_trajectory2) {
+        for(let i = 0; i<trajectory2.length; i++){
+            context.fillStyle = circle_color;
+            context.beginPath();
+            context.arc(...cartesian_to_canvas(trajectory2[i][0], trajectory2[i][1]), 5, 0, 2*Math.PI);
+            context.fill();
+            context.closePath();
+        }
+    }
+    
 }
 function draw(){
     draw_axis();
     draw_axis_labels();
+    draw_variables();
     update();
     draw_elements();
 }
 
 function update(){
+    if(end)
+        return;
+    solve();
+}
+
+function solve(){
     y = runge_Kutta(0, y, f, time_step)
     pos[0] = [l1*Math.sin(y[0]), -l1*Math.cos(y[0])]
     pos[1] = [l2*Math.sin(y[1]) + pos[0][0], -l2*Math.cos(y[1]) + pos[0][1]]
+    
+    trajectory1.push(pos[0]);
+    trajectory2.push(pos[1]);
+
+    if(trajectory1.length > max_trajectory_length)
+        trajectory1.shift();
+    if(trajectory2.length > max_trajectory_length)
+        trajectory2.shift();
 }
 
 
@@ -105,11 +157,11 @@ window.onresize = resize;
 
 
 /* Connect Elements to inputs */
-const m1 = 2;
-const m2 = 2;
-const l1 = 1;
-const l2 = 1;
-const g = 9.81;
+let m1 = 2;
+let m2 = 2;
+let l1 = 1;
+let l2 = 1;
+let g = 9.81;
 const time_step = 0.01;
 let theta1 = 2*Math.PI*(2/3);
 let theta2 = 2*Math.PI*(10/360);
@@ -166,30 +218,6 @@ function runge_Kutta(t, y, f, delta_t){
     return vector_sum(y, const_multiplication(1/6, vector_sum(k1, vector_sum(const_multiplication(2, k2), vector_sum(const_multiplication(2, k3), k4)))))
 }
 
-/**
- * Performs numerical integration using the Runge-Kutta method.
- * @param {function} f - The function that calculates the derivative of the state vector.
- * @param {number} t0 - The initial time.
- * @param {number[]} y0 - The initial state vector.
- * @param {number} tend - The end time.
- * @param {number} h - The time step size.
- * @returns {number[][]} An array containing the time values and the corresponding state vectors.
- */
-function integrate(f, t0, y0, tend, h){
-    let T=[t0]
-    let Y=[y0]
-    let t = t0
-    let y = y0
-    while(t < tend){
-        y = runge_Kutta(t, y, f, h)
-        t += h
-        T.push(t)
-        Y.push(y)
-    }
-    return [T, Y]
-    
-}
-
 /* Auxiliary Functions /*
 
 /**
@@ -222,6 +250,142 @@ function const_multiplication(c, p){
     return vec
 }
 
+/* Start Reset */
+function reset(){
+    end = false;
+    y = [theta1, theta2, w_1, w_2]
+    trajectory1 = [];
+    trajectory2 = [];
+}
+
+function play_pause(){
+    if(end){
+        end = false;
+        play_button.innerHTML = '<path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5m5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5"/>'
+    } else{
+        end = true;
+        play_button.innerHTML = '<path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/>'
+    }
+}
+
+const play_button = document.getElementById("play")
+play_button.onclick = play_pause;
+
+document.getElementById("reset").onclick = reset;
+
+let interval = null;
+document.getElementById("skip").addEventListener("mousedown", function(){
+    if(end==false)
+        play_pause();
+        
+    interval = setInterval(solve, time_step*4000);
+});
+
+document.getElementById("skip").addEventListener("mouseup", function(){
+    clearInterval(interval);
+});
+
+
+
+/* Connect Inputs */
+document.getElementById("m1_range").onchange = function(){ 
+    m1 = parseFloat(this.value).toFixed(2);
+    document.getElementById("m1_number").value = m1;
+}
+document.getElementById("m1_number").onchange = function(){
+    m1 = parseFloat(this.value).toFixed(2);
+    document.getElementById("m1_range").value = m1;
+} 
+
+document.getElementById("m2_range").onchange = function(){ 
+    m2 = parseFloat(this.value).toFixed(2);
+    document.getElementById("m2_number").value = m2;
+}
+document.getElementById("m2_number").onchange = function(){
+    m2 = parseFloat(this.value).toFixed(2);
+    document.getElementById("m2_range").value = m2;
+}
+
+document.getElementById("l1_range").onchange = function(){ 
+    l1 = parseFloat(this.value).toFixed(2);
+    document.getElementById("l1_number").value = l1;
+}
+
+document.getElementById("l1_number").onchange = function(){
+    l1 = parseFloat(this.value).toFixed(2);
+    document.getElementById("l1_range").value = l1;
+}
+
+document.getElementById("l2_range").onchange = function(){ 
+    l2 = parseFloat(this.value).toFixed(2);
+    document.getElementById("l2_number").value = l2;
+}
+
+document.getElementById("l2_number").onchange = function(){
+    l2 = parseFloat(this.value).toFixed(2);
+    document.getElementById("l2_range").value = l2;
+}
+
+document.getElementById("g_range").onchange = function(){ 
+    g = parseFloat(this.value).toFixed(2);
+    document.getElementById("g_number").value = g;
+}
+
+document.getElementById("g_number").onchange = function(){
+    g = parseFloat(this.value).toFixed(2);
+    document.getElementById("g_range").value = g;
+}
+
+/* Initial conditions */
+document.getElementById("a1_range").onchange = function(){ 
+    theta1 = parseFloat(this.value) * Math.PI / 180;
+    document.getElementById("a1_number").value = parseFloat(this.value);
+}
+
+document.getElementById("a1_number").onchange = function(){
+    theta1 = parseFloat(this.value) * Math.PI / 180;
+    document.getElementById("a1_range").value = parseFloat(this.value);
+}
+
+document.getElementById("a2_range").onchange = function(){ 
+    theta2 = parseFloat(this.value) * Math.PI / 180;
+    document.getElementById("a2_number").value = parseFloat(this.value);
+}
+
+document.getElementById("a2_number").onchange = function(){
+    theta2 = parseFloat(this.value) * Math.PI / 180;
+    document.getElementById("a2_range").value = parseFloat(this.value);
+}
+
+document.getElementById("v1_range").onchange = function(){ 
+    w_1 = parseFloat(this.value)
+    document.getElementById("v1_number").value = w_1;
+}
+
+document.getElementById("v1_number").onchange = function(){ 
+    w_1 = parseFloat(this.value)
+    document.getElementById("v1_number").value = w_1;
+}
+
+document.getElementById("v2_range").onchange = function(){ 
+    w_2 = parseFloat(this.value)
+    document.getElementById("v2_number").value = w_2;
+}
+
+document.getElementById("v2_number").onchange = function(){ 
+    w_2 = parseFloat(this.value)
+    document.getElementById("v2_number").value = w_2;
+}
+
+document.getElementById("trajectory1").onchange = function(){
+    draw_trajectory1 = this.checked;
+    trajectory1 = [];
+}
+
+document.getElementById("trajectory2").onchange = function(){
+    draw_trajectory2 = this.checked;
+    trajectory2 = [];
+}
 
 /* Main */
 resize();

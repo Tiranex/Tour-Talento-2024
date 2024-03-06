@@ -20,3 +20,16 @@
     float: left;
     margin: 30px;
 }
+
+svg {
+    width: 30px;
+    height: 30px;
+}
+
+#control_buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+}

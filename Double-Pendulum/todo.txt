@@ -10,3 +10,6 @@ reset the turn on the AI APP.
 implement llm app la del lenguaje
 lorentz atractor
 improve 3 body
+Trayectorias 
+Presets
+drag and drop
