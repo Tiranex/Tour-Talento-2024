@@ -13,3 +13,14 @@ improve 3 body
 Trayectorias 
 Presets
 drag and drop
+
+
+TO FIX
+SLIDERS NOT UPDATING
+ADD DELETE BUTTON
+ADD SOME PRESETS
+Prueba a colorcarlos de manera simetrica es lo más simple
+por ejemplo 
+grados: 0, 0 180 180
+y hacerlo así añadiendo varios que se muestre el movimiento
+AÑADE LAS ECUACIONES

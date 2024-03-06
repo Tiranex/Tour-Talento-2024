@@ -26,10 +26,41 @@ svg {
     height: 30px;
 }
 
-#control_buttons {
+.control_buttons {
     display: flex;
     flex-direction: row;
     gap: 10px;
     align-items: center;
     margin-bottom: 20px;
+}
+
+.wrapper{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+select{
+    width: 100%;
+    height: 100%;
+    padding-bottom: 30px;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    background-color: #f2f2f2;
+    font-size: 14px;
+    color: #333;
+    outline: none;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.active{
+    color: red;
+    font-weight: bold;
+}
+
+select:hover,
+select:focus {
+    border-color: #666;
+    
 }

@@ -16,7 +16,7 @@
         
         <div id="controls">
             <div id="inputs">
-                <div id="control_buttons">
+                <div class="control_buttons">
                     <svg id="play" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
                         <path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5m5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5"></path>
                     </svg>
@@ -29,67 +29,88 @@
                     </svg>
                     
                 </div>
-                
-                <h2>Parameters</h2>
-                <div class="input">
-                    <label for="m1">Masa 1:</label>
-                    <input type="range" id="m1_range" step="any" min="0.1" max="5" value="1">
-                    <input type="number" id="m1_number"  min="0.1" max="5" value="1">
-                </div>
-                <div class="input">
-                    <label for="m2">Masa 2:</label>
-                    <input type="range" id="m2_range" step="any" min="0.1" max="5" value="1">
-                    <input type="number" id="m2_number" min="0.1" max="5" value="1">
-                </div>
-                <div class="input">
-                    <label for="l1">Longitud 1:</label>
-                    <input type="range" id="l1_range" step="any" min="0.05" max="1" value="1">
-                    <input type="number" id="l1_number" min="0.05" max="5" value="1">
-                </div>
-                <div class="input">
-                    <label for="l2">Longitud 2:</label>
-                    <input type="range" id="l2_range" step="any" min="0.05" max="1" value="1">
-                    <input type="number" id="l2_number" min="0.05" max="5" value="1">
+
+                <h2>Péndulos</h2>
+                <select size="3" id ="select_pendulum">
+                    <option value="0" class="active">Péndulo 1</option>
+                </select>
+
+                <div class="control_buttons">
+                    <svg onclick="add_pendulum()" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle-fill" viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1z"/>
+                    </svg>
                 </div>
                 
-                <div class="input">
-                    <label for="g">Gravedad:</label>
-                    <input type="range" id="g_range" step="any" min="1" max="20" value="9.8">
-                    <input type="number" id="g_number" min="1" max="20" value="9.8">
+                <div class="wrapper">
+                    <h2>Parámetros</h2>
+                    <div class="input">
+                        <label for="m1">Masa 1:</label>
+                        <input type="range" id="m1_range" step="any" min="0.1" max="5" value="1">
+                        <input type="number" id="m1_number"  min="0.1" max="5" value="1">
+                    </div>
+                    <div class="input">
+                        <label for="m2">Masa 2:</label>
+                        <input type="range" id="m2_range" step="any" min="0.1" max="5" value="1">
+                        <input type="number" id="m2_number" min="0.1" max="5" value="1">
+                    </div>
+                    <div class="input">
+                        <label for="l1">Longitud 1:</label>
+                        <input type="range" id="l1_range" step="any" min="0.05" max="1" value="1">
+                        <input type="number" id="l1_number" min="0.05" max="5" value="1">
+                    </div>
+                    <div class="input">
+                        <label for="l2">Longitud 2:</label>
+                        <input type="range" id="l2_range" step="any" min="0.05" max="1" value="1">
+                        <input type="number" id="l2_number" min="0.05" max="5" value="1">
+                    </div>
+                    
+                    <div class="input">
+                        <label for="g">Gravedad:</label>
+                        <input type="range" id="g_range" step="any" min="1" max="20" value="9.8">
+                        <input type="number" id="g_number" min="1" max="20" value="9.8">
+                    </div>
                 </div>
-            </div>
-            <h2>Condiciones Iniciales</h2>
-            <div class="input">
-                <label for="a1">Ángulo 1:</label>
-                <input type="range" id="a1_range" step="any" min="0" max="360" value="120">
-                <input type="number" id="a1_number" min="0" max="360" value="120">
-            </div>
-            <div class="input">
-                <label for="a2">Ángulo 2:</label>
-                <input type="range" id="a2_range" step="any" min="0" max="360" value="10">
-                <input type="number" id="a2_number" min="0" max="360" value="10">
-            </div>
-            <div class="input">
-                <label for="v1">Velocidad 1:</label>
-                <input type="range" id="v1_range" step="any" min="0" max="10" value="1">
-                <input type="number" id="v1_number" min="0" max="10" value="1">
-            </div>
-            <div class="input">
-                <label for="v2">Velocidad 2:</label>
-                <input type="range" id="v2_range" step="any" min="0" max="10" value="1">
-                <input type="number" id="v2_number" min="0" max="10" value="1">
             </div>
 
+            <div class="wrapper">
+                <h2>Condiciones Iniciales</h2>
+                <div class="input">
+                    <label for="a1">Ángulo 1:</label>
+                    <input type="range" id="a1_range" step="any" min="0" max="360" value="120">
+                    <input type="number" id="a1_number" min="0" max="360" value="120">
+                </div>
+                <div class="input">
+                    <label for="a2">Ángulo 2:</label>
+                    <input type="range" id="a2_range" step="any" min="0" max="360" value="10">
+                    <input type="number" id="a2_number" min="0" max="360" value="10">
+                </div>
+                <div class="input">
+                    <label for="v1">Velocidad 1:</label>
+                    <input type="range" id="v1_range" step="any" min="0" max="10" value="1">
+                    <input type="number" id="v1_number" min="0" max="10" value="1">
+                </div>
+                <div class="input">
+                    <label for="v2">Velocidad 2:</label>
+                    <input type="range" id="v2_range" step="any" min="0" max="10" value="1">
+                    <input type="number" id="v2_number" min="0" max="10" value="1">
+                </div>
+            </div>
+
+            <div class="wrapper">
             <h2>Visualización</h2>
-            <div class="input">
-                <label for = "trajectory1">Mostrar trayectoria 1</label>
-                <input type="checkbox" id="trajectory1" checked>
+                <div class="input">
+                    <label for = "trajectory1">Mostrar trayectoria 1</label>
+                    <input type="checkbox" id="trajectory1" checked>
+                </div>
+                <div class="input">
+                    <label for = "trajectory2">Mostrar trayectoria 2</label>
+                    <input type="checkbox" id="trajectory2" checked>
+                </div>
             </div>
-            <div class="input">
-                <label for = "trajectory2">Mostrar trayectoria 2</label>
-                <input type="checkbox" id="trajectory2" checked>
-            </div>
-    
+            
         </div>
     </div>
     
