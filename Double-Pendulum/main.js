@@ -146,11 +146,17 @@ function solve(){
 
 
 
-
+/* Retocar para obtener el width de control */
+const control = document.getElementById("controls");
+const bottom_nav = document.getElementById("bottom_nav");
 function resize(){
     min = Math.min(window.innerWidth, window.innerHeight);
+    bottom_nav.width = window.innerWidth;
     canvas.width = min
     canvas.height = min
+    console.log(window.innerWidth, min, window.innerWidth - min)
+    if(window.innerWidth - min < control.clientWidth+70)
+        canvas.width = window.innerWidth
     draw();
 }
 
@@ -312,14 +318,14 @@ function add_pendulum(){
     n_pendulums++;
     y.push([0,0,0,0])
     pos.push([[0,-1],[0,-2]])
-    m1.push(2);
-    m2.push(2);
-    l1.push(1);
-    l2.push(1);
-    theta1.push(0);
-    theta2.push(0);
-    w_1.push(0);
-    w_2.push(0);
+    m1.push(2.);
+    m2.push(2.);
+    l1.push(1.);
+    l2.push(1.);
+    theta1.push(0.);
+    theta2.push(0.);
+    w_1.push(0.);
+    w_2.push(0.);
 
     trajectory1.push([])
     trajectory2.push([])
@@ -330,6 +336,41 @@ function add_pendulum(){
     selected_pendulum = n_pendulums-1;
     load_settings();
     draw();
+}
+
+function delete_pendulum(){
+    if(n_pendulums == 1)
+        return;
+    n_pendulums--;
+
+    y.splice(selected_pendulum, 1);
+    pos.splice(selected_pendulum, 1);
+    m1.splice(selected_pendulum, 1);
+    m2.splice(selected_pendulum, 1);
+    l1.splice(selected_pendulum, 1);
+    l2.splice(selected_pendulum, 1);
+    theta1.splice(selected_pendulum, 1);
+    theta2.splice(selected_pendulum, 1);
+    w_1.splice(selected_pendulum, 1);
+    w_2.splice(selected_pendulum, 1);
+    trajectory1.splice(selected_pendulum, 1);
+    trajectory2.splice(selected_pendulum, 1);
+    if(selected_pendulum == n_pendulums)
+        selected_pendulum--;    
+    const options = document.querySelectorAll("#select_pendulum option");
+    pendulum_selector.removeChild(options[selected_pendulum]);
+    options[selected_pendulum].classList.add("active");
+    update_value();
+    load_settings();
+    draw();
+}
+
+function update_value(){
+    const options = document.querySelectorAll("#select_pendulum option")
+    for(let i=0; i<options.length; i++){
+        options[i].value = i;
+        options[i].textContent = `Pendulum ${i+1}`;
+    }
 }
 
 function load_settings(){
@@ -343,6 +384,15 @@ function load_settings(){
     document.getElementById("a2_number").value = (theta2[i] * 180 / Math.PI).toFixed(2);
     document.getElementById("v1_number").value = w_1[i].toFixed(2);
     document.getElementById("v2_number").value = w_2[i].toFixed(2);
+
+    document.getElementById("m1_range").value = m1[i].toFixed(2);
+    document.getElementById("m2_range").value = m2[i].toFixed(2);
+    document.getElementById("l1_range" ).value = l1[i].toFixed(2);
+    document.getElementById("l2_range" ).value = l2[i].toFixed(2);
+    document.getElementById("a1_range" ).value = (theta1[i] * 180 / Math.PI).toFixed(2);
+    document.getElementById("a2_range").value = (theta2[i] * 180 / Math.PI).toFixed(2);
+    document.getElementById("v1_range").value = w_1[i].toFixed(2);
+    document.getElementById("v2_range").value = w_2[i].toFixed(2);
     
 }
 
@@ -407,51 +457,51 @@ function stopDragCircle() {
 }
 
 /* Connect Inputs */
-document.getElementById("m1_range").onchange = function(){ 
-    m1[selected_pendulum] = parseFloat(this.value).toFixed(2);
+document.getElementById("m1_range").onchange = function(){
+    m1[selected_pendulum] = parseFloat(parseFloat(this.value).toFixed(2));
     document.getElementById("m1_number").value = m1[selected_pendulum];
 }
 document.getElementById("m1_number").onchange = function(){
-    m1[selected_pendulum] = parseFloat(this.value).toFixed(2);
+    m1[selected_pendulum] = parseFloat(parseFloat(this.value).toFixed(2));
     document.getElementById("m1_range").value = m1[selected_pendulum];
 } 
 
 document.getElementById("m2_range").onchange = function(){ 
-    m2[selected_pendulum] = parseFloat(this.value).toFixed(2);
+    m2[selected_pendulum] = parseFloat(parseFloat(this.value).toFixed(2));
     document.getElementById("m2_number").value = m2[selected_pendulum];
 }
 document.getElementById("m2_number").onchange = function(){
-    m2[selected_pendulum] = parseFloat(this.value).toFixed(2);
+    m2[selected_pendulum] = parseFloat(parseFloat(this.value).toFixed(2));
     document.getElementById("m2_range").value = m2[selected_pendulum];
 }
 
 document.getElementById("l1_range").onchange = function(){ 
-    l1[selected_pendulum] = parseFloat(this.value).toFixed(2);
+    l1[selected_pendulum] = parseFloat(parseFloat(this.value).toFixed(2));
     document.getElementById("l1_number").value = l1[selected_pendulum];
 }
 
 document.getElementById("l1_number").onchange = function(){
-    l1[selected_pendulum] = parseFloat(this.value).toFixed(2);
+    l1[selected_pendulum] = parseFloat(parseFloat(this.value).toFixed(2));
     document.getElementById("l1_range").value = l1[selected_pendulum];
 }
 
 document.getElementById("l2_range").onchange = function(){ 
-    l2[selected_pendulum] = parseFloat(this.value).toFixed(2);
+    l2[selected_pendulum] = parseFloat(parseFloat(this.value).toFixed(2));
     document.getElementById("l2_number").value = l2[selected_pendulum];
 }
 
 document.getElementById("l2_number").onchange = function(){
-    l2[selected_pendulum] = parseFloat(this.value).toFixed(2);
+    l2[selected_pendulum] = parseFloat(parseFloat(this.value).toFixed(2));
     document.getElementById("l2_range").value = l2[selected_pendulum];
 }
 
 document.getElementById("g_range").onchange = function(){ 
-    g = parseFloat(this.value).toFixed(2);
+    g = parseFloat(parseFloat(this.value).toFixed(2));
     document.getElementById("g_number").value = g;
 }
 
 document.getElementById("g_number").onchange = function(){
-    g = parseFloat(this.value).toFixed(2);
+    g = parseFloat(parseFloat(this.value).toFixed(2));
     document.getElementById("g_range").value = g;
 }
 
@@ -510,6 +560,7 @@ document.getElementById("trajectory2").onchange = function(){
         trajectory2[i] = [];
     }
 }
+
 
 /* Main */
 resize();

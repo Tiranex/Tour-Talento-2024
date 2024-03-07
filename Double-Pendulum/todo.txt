@@ -1,3 +1,4 @@
+
 Connect all inputs
 go reset  buttons
 add another pendulum
@@ -24,3 +25,4 @@ por ejemplo
 grados: 0, 0 180 180
 y hacerlo así añadiendo varios que se muestre el movimiento
 AÑADE LAS ECUACIONES
+maybe display graph
