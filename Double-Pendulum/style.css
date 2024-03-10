@@ -74,15 +74,17 @@ p{
 }
 
 .info_text{
-    width: 45%;
+    width: auto;
     position: relative;
     float: left;
-    margin: 20px;
-    margin-top: 10px;
     font-size:14px;
 }
 .eq{
-    font-size:10px;
+    font-size:14px;
+    overflow-x: auto;
+    overflow-y: auto;
+    padding:0.5rem;
+    width: 90%;
 }
 
 ul{
@@ -100,17 +102,19 @@ ul{
 }
 
 #info_wrapper{
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    margin:20px;
+    grid-gap: 20px;
+    grid-template-columns: auto auto;
     float: left;
     position: relative;
 }
 
 @media (max-width: 980px) {
     #info_wrapper{
-        flex-direction: column;
+        grid-template-columns: auto;
+        margin: 20px;
+        grid-gap:0px;
     }
-    .info_text{
-        width: 90%;
-    }
+ 
 }

@@ -157,6 +157,8 @@ function resize(){
     console.log(window.innerWidth, min, window.innerWidth - min)
     if(window.innerWidth - min < control.clientWidth+70)
         canvas.width = window.innerWidth
+    if(canvas.width > document.documentElement.clientWidth)
+        canvas.width = document.documentElement.clientWidth;
     draw();
 }
 
