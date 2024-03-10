@@ -26,3 +26,9 @@ grados: 0, 0 180 180
 y hacerlo así añadiendo varios que se muestre el movimiento
 AÑADE LAS ECUACIONES
 maybe display graph
+
+
+
+** OTHERS
+AÑADIR RESTRICCIONES lorentz para que se ponga en rojo con valores negativos o 0 o así
+Imagen a texto nn.
