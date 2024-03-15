@@ -20,7 +20,7 @@
     position: relative;
     float: left;
     margin: 30px;
-    margin-bottom: 0px;
+    margin-bottom: 15px;
 }
 
 svg {
@@ -117,4 +117,24 @@ ul{
         grid-gap:0px;
     }
  
+}
+
+#reference p{
+    text-align: center;
+    padding: 10px;
+    color:white;
+    font-weight: bold;
+    margin: 0;
+    display: relative;
+    float:left;
+    width: 100%;
+    justify-content: center;
+}
+#reference{
+    
+}
+
+#reference svg{
+    width:16px;
+    height: 16px;
 }

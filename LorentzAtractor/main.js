@@ -19,6 +19,8 @@ let pointCloud;
 const red = new THREE.Color(0xff0000);
 
 function init3D() {
+    clearInterval(interval_background);
+    back_canvas.remove();
     console.log("Current parameters", a, b ,c);
     const container = document.getElementById('container');
     scene = new THREE.Scene();
@@ -125,6 +127,7 @@ const rainbowColors = generateRainbowColors();
 
 
 function init(){
+    document.getElementById('control_buttons').style.display = 'flex';
     document.getElementById('initial').style.display = 'none';
     init3D();
     animate();
@@ -245,3 +248,100 @@ play_button.onclick = function(){
         play_button.innerHTML = '<path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/>'
     }
 }
+
+// background
+const back_canvas = document.getElementById("background_canvas");
+const back_ctx = back_canvas.getContext('2d');
+
+function draw(){
+    
+}
+
+
+
+
+
+
+function drawStars3D() {
+    const starGeometry = new THREE.Geometry();
+    const starMaterial = new THREE.PointsMaterial({ color: 0xffffff });
+
+    for (let i = 0; i < MAX_POINTS; i++) {
+        const x = Math.random() * 2000 - 1000;
+        const y = Math.random() * 2000 - 1000;
+        const z = Math.random() * 2000 - 1000;
+
+        const star = new THREE.Vector3(x, y, z);
+        starGeometry.vertices.push(star);
+    }
+
+    const starField = new THREE.Points(starGeometry, starMaterial);
+    scene.add(starField);
+}
+
+function drawSpiral(){
+
+    const centerX = back_canvas.width / 2;
+    const centerY = back_canvas.height / 2;
+    const radius = 0;
+    const angle = Date.now() * 0.002; // Adjust the rotation speed here
+
+    back_ctx.beginPath();
+    back_ctx.moveTo(centerX, centerY);
+
+    const multiplier=0.25;
+    let i = 0;
+    while (true) {
+        const currentAngle = angle + (i * Math.PI) / 180;
+        const x = centerX + (radius + i) * multiplier * Math.cos(currentAngle);
+        const y = centerY + (radius + i) * multiplier * Math.sin(currentAngle);
+        if (x < 0 && y < 0) {
+            break;
+        }
+        back_ctx.lineTo(x, y);
+        i++;
+    }
+
+    back_ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+    back_ctx.lineWidth = 3;
+    back_ctx.stroke();
+}
+
+const numStars = window.innerWidth < 600 ? 90 : 150;
+const stars = Array(numStars).fill(0);
+
+function getStars(){
+    for(let i =0; i<numStars; i++){
+        stars[i] = [Math.random()*back_canvas.width, Math.random()*back_canvas.height, Math.random()*3];
+    }
+}
+
+function drawStars() {
+
+    back_ctx.clearRect(0, 0, back_canvas.width, back_canvas.height);
+
+    for (let i = 0; i < numStars; i++) {
+        back_ctx.beginPath();
+        back_ctx.arc(...stars[i], 0, 2 * Math.PI);
+        back_ctx.fillStyle = "white";
+        back_ctx.fill();
+    }
+}
+
+
+
+function resize(){
+    if(!back_canvas)
+        return;
+    back_canvas.width = document.body.clientWidth-1;
+    back_canvas.height = document.body.clientHeight-1;
+    getStars();
+}
+resize();
+
+window.onresize = resize;
+
+const interval_background = setInterval(function(){
+    drawStars();
+    drawSpiral();
+}, 16); // Adjust the animation speed here

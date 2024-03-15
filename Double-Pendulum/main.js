@@ -7,6 +7,7 @@ const background_color = "#333";
 const axis_color = "white";
 const bar_color = ["gray", "gray", "gray", "gray"];
 const circle_color = ["red", "blue", "green", "purple"];
+const circle_trajectory_color=["lightcoral", "lightblue", "lightgreen", "#CBC3E3"]
 const circle_radius = 20;
 
 let trajectory1 = [[]];
@@ -64,6 +65,28 @@ function draw_variables() {
 }
 
 function draw_elements(i){
+    
+    // Trajectory
+    if(draw_trajectory1) {
+        for(let j = 0; j<trajectory1[i].length; j++){
+            context.fillStyle = circle_trajectory_color[i];
+            context.beginPath();
+            context.arc(...cartesian_to_canvas(trajectory1[i][j][0], trajectory1[i][j][1]), 5, 0, 2*Math.PI);
+            context.fill();
+            context.closePath();
+        }
+    }
+    
+    if(draw_trajectory2) {
+        for(let j = 0; j<trajectory2[i].length; j++){
+            context.fillStyle = circle_trajectory_color[i];
+            context.beginPath();
+            context.arc(...cartesian_to_canvas(trajectory2[i][j][0], trajectory2[i][j][1]), 5, 0, 2*Math.PI);
+            context.fill();
+            context.closePath();
+        }
+    }
+    
     // Lines
     context.strokeStyle = bar_color[i];
     context.lineWidth = 3;
@@ -91,26 +114,7 @@ function draw_elements(i){
     context.fill();
     context.closePath();
 
-    // Trajectory
-    if(draw_trajectory1) {
-        for(let j = 0; j<trajectory1[i].length; j++){
-            context.fillStyle = circle_color[i];
-            context.beginPath();
-            context.arc(...cartesian_to_canvas(trajectory1[i][j][0], trajectory1[i][j][1]), 5, 0, 2*Math.PI);
-            context.fill();
-            context.closePath();
-        }
-    }
     
-    if(draw_trajectory2) {
-        for(let j = 0; j<trajectory2[i].length; j++){
-            context.fillStyle = circle_color[i];
-            context.beginPath();
-            context.arc(...cartesian_to_canvas(trajectory2[i][j][0], trajectory2[i][j][1]), 5, 0, 2*Math.PI);
-            context.fill();
-            context.closePath();
-        }
-    }
     
 }
 function draw(){
