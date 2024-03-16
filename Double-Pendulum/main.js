@@ -152,13 +152,10 @@ function solve(){
 
 /* Retocar para obtener el width de control */
 const control = document.getElementById("controls");
-const bottom_nav = document.getElementById("bottom_nav");
 function resize(){
     min = Math.min(window.innerWidth, window.innerHeight);
-    bottom_nav.width = window.innerWidth;
     canvas.width = min
     canvas.height = min
-    console.log(window.innerWidth, min, window.innerWidth - min)
     if(window.innerWidth - min < control.clientWidth+70)
         canvas.width = window.innerWidth
     if(canvas.width > document.documentElement.clientWidth)

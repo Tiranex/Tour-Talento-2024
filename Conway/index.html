@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script defer type="text/javascript" src="main.js"></script>
+    <title>3-Body Simulation</title>
+</head>
+<body>
+    <div id="wrapper">
+        <table  id="gridContainer"></table>
+        
+        <div id="controls">
+            <div id="inputs">
+                <h1 style="margin-bottom: 10px;">3-Body Simulation</h1>
+                <div class="control_buttons">
+                    <svg id="play" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
+                        <path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5m5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5"></path>
+                    </svg>
+                    <svg id="reset" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2z"/>
+                        <path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466"/>
+                    </svg>
+                    <svg id="skip" style="opacity: 50%" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-skip-end-fill" viewBox="0 0 16 16">
+                        <path d="M12.5 4a.5.5 0 0 0-1 0v3.248L5.233 3.612C4.693 3.3 4 3.678 4 4.308v7.384c0 .63.692 1.01 1.233.697L11.5 8.753V12a.5.5 0 0 0 1 0z"/>
+                    </svg>
+                    
+                </div>
+
+                <h2 style="margin-bottom: 10px;">Trayectorias</h2>
+                <select size="4" id ="select_trajectory">
+                    <option value="0" class="active">Catenary</option>
+                    <option value="1">Dragonfly</option>
+                    <option value="2">Comba</option>
+                    <option value="3">Óvalos</option>
+                    <option value="4">Mariposa</option>
+                </select>
+                
+                <div class="wrapper">
+                    <h2>Parámetros</h2>
+                    <div class="input">
+                        <label for="m1">Masa 1:</label>
+                        <input type="range" id="m1_range" step="any" min="0.1" max="5" value="1">
+                        <input type="number" id="m1_number"  min="0.1" max="5" value="1">
+                    </div>
+                    <div class="input">
+                        <label for="m2">Masa 2:</label>
+                        <input type="range" id="m2_range" step="any" min="0.1" max="5" value="1">
+                        <input type="number" id="m2_number" min="0.1" max="5" value="1">
+                    </div>
+                    <div class="input">
+                        <label for="m3">Masa 3:</label>
+                        <input type="range" id="m3_range" step="any" min="0.1" max="5" value="1">
+                        <input type="number" id="m3_number"  min="0.1" max="5" value="1">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="wrapper">
+            <h2>Visualización</h2>
+                <div class="input">
+                    <label for = "trajectory1">Mostrar trayectoria 1</label>
+                    <input type="checkbox" id="trajectory1" checked>
+                </div>
+                <div class="input">
+                    <label for = "trajectory2">Mostrar trayectoria 2</label>
+                    <input type="checkbox" id="trajectory2" checked>
+                </div>
+                <div class="input">
+                    <label for = "trajectory3">Mostrar trayectoria 3</label>
+                    <input type="checkbox" id="trajectory3" checked>
+                </div>
+            </div>
+
+            <div class="wrapper">
+                <h2>Información</h2>
+                 <div class="info_wrapper">
+                    <p class="info">Posición 1: <span id="p1">{x: 3 y: 4}</span></p>
+                    <p class="info">Velocidad 1: <span id="v1">#</span></p>
+                 </div>
+                 <div class="info_wrapper">
+                    <p   class="info">Posición 2: <span id="p2">#</span></p>
+                    <p  class="info">Velocidad 2: <span id="v2">#</span></p>
+                </div>
+                <div class="info_wrapper">
+                    <p class="info">Posición 3: <span id="p3">#</span></p>
+                    <p  class="info">Velocidad 3: <span id="v3">#</span></p>
+                </div> 
+            </div>
+
+            <p style="margin-top: 10px;">Las condiciones iniciales provienen de este <a target="_blank" href="http://three-body.ipb.ac.rs/">sitio web</a></p>
+        </div>
+        </div>
+    </div>
+
+    
+
+    
+</body>
+</html>

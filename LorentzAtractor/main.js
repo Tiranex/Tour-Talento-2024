@@ -12,6 +12,7 @@ const threshold = 0.1;
 const POINTSIZE = 0.5;
 
 var MAX_POINTS = 100000;
+var MAX_STARS = 4000;
 var geometry = new THREE.BufferGeometry();
 var positions = new Float32Array( MAX_POINTS * 3 ); 
 var colors = new Float32Array( MAX_POINTS * 3 );
@@ -25,7 +26,7 @@ function init3D() {
     const container = document.getElementById('container');
     scene = new THREE.Scene();
     // Camera
-    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.00001, 0);
+    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.00001, 300000000);
     const center_position = promedio();
     camera.position.set(center_position[0]*3, center_position[1]*3, center_position[2]*3);
 
@@ -53,12 +54,29 @@ function init3D() {
     geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
     const material = new THREE.PointsMaterial({ size: POINTSIZE, vertexColors: true });
     pointCloud = new THREE.Points(geometry, material);
-    
+    pointCloud.frustumCulled = false;
     scene.add(pointCloud);
 
+    drawStars3D();
 
+    onWindowResize();
+    window.onresize = onWindowResize;
+}
+
+
+function drawStars3D() {
+    const starGeometry = new THREE.SphereGeometry(0.15, 32, 32);
+    const starMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
     
-    window.addEventListener('resize', onWindowResize);
+
+    for (let i = 0; i < MAX_STARS; i++) {
+        const starField = new THREE.Mesh(starGeometry, starMaterial);
+        starField.position.needsUpdate = false;
+        starField.position.set(Math.random() * 900 - 500, Math.random() * 900 - 500, Math.random() * 900 - 500);
+        scene.add(starField);
+    }
+    
+    
 }
 
 function promedio(){
@@ -89,6 +107,10 @@ function animate() {
         if(index < MAX_POINTS ){
             const positions_geom = pointCloud.geometry.attributes.position.array;
             y = runge_Kutta(0, y, f, 0.01, index);
+            if (isNaN(y[0]) || isNaN(y[1]) || isNaN(y[2])) {
+                end = true;
+                document.getElementById('error_text').style.display = 'block';
+            }
             positions_geom[index] = y[0];
             positions_geom[index+1] = y[1];
             positions_geom[index+2] = y[2];
@@ -253,32 +275,6 @@ play_button.onclick = function(){
 const back_canvas = document.getElementById("background_canvas");
 const back_ctx = back_canvas.getContext('2d');
 
-function draw(){
-    
-}
-
-
-
-
-
-
-function drawStars3D() {
-    const starGeometry = new THREE.Geometry();
-    const starMaterial = new THREE.PointsMaterial({ color: 0xffffff });
-
-    for (let i = 0; i < MAX_POINTS; i++) {
-        const x = Math.random() * 2000 - 1000;
-        const y = Math.random() * 2000 - 1000;
-        const z = Math.random() * 2000 - 1000;
-
-        const star = new THREE.Vector3(x, y, z);
-        starGeometry.vertices.push(star);
-    }
-
-    const starField = new THREE.Points(starGeometry, starMaterial);
-    scene.add(starField);
-}
-
 function drawSpiral(){
 
     const centerX = back_canvas.width / 2;
@@ -331,10 +327,8 @@ function drawStars() {
 
 
 function resize(){
-    if(!back_canvas)
-        return;
-    back_canvas.width = document.body.clientWidth-1;
-    back_canvas.height = document.body.clientHeight-1;
+    back_canvas.width = document.body.clientWidth+1;
+    back_canvas.height = document.body.clientHeight+1;
     getStars();
 }
 resize();

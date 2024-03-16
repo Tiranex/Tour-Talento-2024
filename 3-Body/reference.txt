@@ -1,5 +1,0 @@
-https://es.wikipedia.org/wiki/M%C3%A9todo_de_Runge-Kutta
-https://betterprogramming.pub/2-d-three-body-problem-simulation-made-simpler-with-python-40d74217a42a
-https://es.wikipedia.org/wiki/Ley_de_gravitaci%C3%B3n_universal
-https://javalab.org/en/three_body_problem_en/
-

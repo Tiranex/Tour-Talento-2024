@@ -1,118 +1,112 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Map</title>
-    <link rel="stylesheet" href="index.css">
-    <script defer type="text/javascript" src="input.js"></script>
-    <script defer type="text/javascript" src="load.js"></script>
-    <script defer type="text/javascript" src="solver.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script defer type="text/javascript" src="main.js"></script>
+    <title>3-Body Simulation</title>
 </head>
 <body>
-    <svg
-            aria-hidden="true"
-            focusable="false"
-            data-prefix="fad"
-            data-icon="angle-double-right"
-            role="img"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 448 512"
-            class="svg-inline--fa fa-angle-double-right fa-w-14 fa-5x"
-          >
-            <g class="fa-group">
-              <path
-                fill="currentColor"
-                d="M224 273L88.37 409a23.78 23.78 0 0 1-33.8 0L32 386.36a23.94 23.94 0 0 1 0-33.89l96.13-96.37L32 159.73a23.94 23.94 0 0 1 0-33.89l22.44-22.79a23.78 23.78 0 0 1 33.8 0L223.88 239a23.94 23.94 0 0 1 .1 34z"
-                class="fa-secondary"
-              ></path>
-              <path
-                fill="currentColor"
-                d="M415.89 273L280.34 409a23.77 23.77 0 0 1-33.79 0L224 386.26a23.94 23.94 0 0 1 0-33.89L320.11 256l-96-96.47a23.94 23.94 0 0 1 0-33.89l22.52-22.59a23.77 23.77 0 0 1 33.79 0L416 239a24 24 0 0 1-.11 34z"
-                class="fa-primary"
-              ></path>
-            </g>
-          </svg>
-    <nav class="navbar">
-        <svg
-            aria-hidden="true"
-            focusable="false"
-            data-prefix="fad"
-            data-icon="angle-double-right"
-            role="img"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 448 512"
-            class="svg-inline--fa fa-angle-double-right fa-w-14 fa-5x"
-          >
-            <g class="fa-group">
-              <path
-                fill="currentColor"
-                d="M224 273L88.37 409a23.78 23.78 0 0 1-33.8 0L32 386.36a23.94 23.94 0 0 1 0-33.89l96.13-96.37L32 159.73a23.94 23.94 0 0 1 0-33.89l22.44-22.79a23.78 23.78 0 0 1 33.8 0L223.88 239a23.94 23.94 0 0 1 .1 34z"
-                class="fa-secondary"
-              ></path>
-              <path
-                fill="currentColor"
-                d="M415.89 273L280.34 409a23.77 23.77 0 0 1-33.79 0L224 386.26a23.94 23.94 0 0 1 0-33.89L320.11 256l-96-96.47a23.94 23.94 0 0 1 0-33.89l22.52-22.59a23.77 23.77 0 0 1 33.79 0L416 239a24 24 0 0 1-.11 34z"
-                class="fa-primary"
-              ></path>
-            </g>
-          </svg>
-          <div id="navbar-container">
-            <h3>Initial Conditions</h3>
-            <table>
-                <tr>
-                    <th>x</th>
-                    <th>y</th>
-                    <th>v<sub>x</sub></th>
-                    <th>v <sub>y</sub></th>
-                </tr>
-                <tr>
-                    <td><input id ="table_1_1" type="text"></td>
-                    <td><input id="table_1_2"  type="text"></td>
-                    <td><input id="table_1_3" type="text"></td>
-                    <td><input id="table_1_4" type="text"></td>
-                </tr>
-                <tr>
-                    <td><input id="table_2_1" type="text"></td>
-                    <td><input id="table_2_2" type="text"></td>
-                    <td><input id="table_2_3" type="text"></td>
-                    <td><input id="table_2_4" type="text"></td>
-                </tr>
-                <tr>
-                    <td><input id="table_3_1" type="text"></td>
-                    <td><input id="table_3_2" type="text"></td>
-                    <td><input id="table_3_3" type="text"></td>
-                    <td><input id="table_3_4" type="text"></td>
-                </tr>
-            </table>
-
-            
-            <select size="8" id ="select_trajectory">
-                <option value="option1">Ovals with flourishes</option>
-                <option value="option2">Oval, catface, and starship</option>
-                <option value="option3">Catenary</option>
-                <option value="option4">Dragonfly</option>
-                <option value="option5">Butterfly I</option>
-                <option value="option6">Butterfly III</option>
-                <option value="option7">Bumblebee</option>
-            </select>
-
-            <h3>Options</h3>
-            <div id="options">
-                <checkbox>
-                    <input checked type="checkbox" id="trajectory_enable" name="option1" value="option1">
-                    <label for="option1">Trajectory</label>
-                </checkbox>
-                <checkbox>
-                    <input type="checkbox" id="velocity_enable" name="option2" value="option2">
-                    <label for="option2">Velocity</label>
-                </checkbox>
-                <div class="slidecontainer">
-                  <input id="speed_selector" type="range" min="1" max="500" value="150" class="slider" id="myRange">
+    <div id="wrapper">
+        <canvas id="canvas" width="800" height="800"></canvas>
+        
+        <div id="controls">
+            <div id="inputs">
+                <h1 style="margin-bottom: 10px;">3-Body Simulation</h1>
+                <div class="control_buttons">
+                    <svg id="play" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
+                        <path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5m5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5"></path>
+                    </svg>
+                    <svg id="reset" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2z"/>
+                        <path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466"/>
+                    </svg>
+                    <svg id="skip" style="opacity: 50%" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-skip-end-fill" viewBox="0 0 16 16">
+                        <path d="M12.5 4a.5.5 0 0 0-1 0v3.248L5.233 3.612C4.693 3.3 4 3.678 4 4.308v7.384c0 .63.692 1.01 1.233.697L11.5 8.753V12a.5.5 0 0 0 1 0z"/>
+                    </svg>
+                    
                 </div>
+
+                <h2 style="margin-bottom: 10px;">Trayectorias</h2>
+                <select size="4" id ="select_trajectory">
+                    <option value="0" class="active">Catenary</option>
+                    <option value="1">Dragonfly</option>
+                    <option value="2">Comba</option>
+                    <option value="3">Óvalos</option>
+                    <option value="4">Mariposa</option>
+                </select>
                 
+                <div class="wrapper">
+                    <h2>Parámetros</h2>
+                    <div class="input">
+                        <label for="m1">Masa 1:</label>
+                        <input type="range" id="m1_range" step="any" min="0.1" max="5" value="1">
+                        <input type="number" id="m1_number"  min="0.1" max="5" value="1">
+                    </div>
+                    <div class="input">
+                        <label for="m2">Masa 2:</label>
+                        <input type="range" id="m2_range" step="any" min="0.1" max="5" value="1">
+                        <input type="number" id="m2_number" min="0.1" max="5" value="1">
+                    </div>
+                    <div class="input">
+                        <label for="m3">Masa 3:</label>
+                        <input type="range" id="m3_range" step="any" min="0.1" max="5" value="1">
+                        <input type="number" id="m3_number"  min="0.1" max="5" value="1">
+                    </div>
+                </div>
             </div>
+
+
+            <div class="wrapper">
+            <h2>Visualización</h2>
+                <div class="input">
+                    <label for = "trajectory1">Mostrar trayectoria 1</label>
+                    <input type="checkbox" id="trajectory1" checked>
+                </div>
+                <div class="input">
+                    <label for = "trajectory2">Mostrar trayectoria 2</label>
+                    <input type="checkbox" id="trajectory2" checked>
+                </div>
+                <div class="input">
+                    <label for = "trajectory3">Mostrar trayectoria 3</label>
+                    <input type="checkbox" id="trajectory3" checked>
+                </div>
+            </div>
+
+            <div class="wrapper">
+                <h2>Información</h2>
+                 <div class="info_wrapper">
+                    <p class="info">Posición 1: <span id="p1">{x: 3 y: 4}</span></p>
+                    <p class="info">Velocidad 1: <span id="v1">#</span></p>
+                 </div>
+                 <div class="info_wrapper">
+                    <p   class="info">Posición 2: <span id="p2">#</span></p>
+                    <p  class="info">Velocidad 2: <span id="v2">#</span></p>
+                </div>
+                <div class="info_wrapper">
+                    <p class="info">Posición 3: <span id="p3">#</span></p>
+                    <p  class="info">Velocidad 3: <span id="v3">#</span></p>
+                </div> 
+            </div>
+
+            <p style="margin-top: 10px;">Las condiciones iniciales provienen de este <a target="_blank" href="http://three-body.ipb.ac.rs/">sitio web</a></p>
         </div>
-    </nav>
-    <canvas id="canvas"></canvas>
+        </div>
+    </div>
+
+    
+
+    
 </body>
 </html>
