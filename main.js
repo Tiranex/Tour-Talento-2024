@@ -1,4 +1,4 @@
-const pixelSize=120;
+const pixelSize=80;
 let rows = 50;
 let cols = 50;
 
@@ -8,7 +8,7 @@ let resize_interval;
 let play = true;
 let play_interval;
 function resize(){
-    rows=parseInt(window.innerHeight/pixelSize);
+    rows=parseInt(document.documentElement.scrollHeight/pixelSize);
     cols=parseInt(window.innerWidth/pixelSize);
     play=false;
     gridContainer.innerHTML = '';
@@ -208,7 +208,7 @@ function update_text(){
 
 
 play_interval = setInterval(playPause, 1000);
-rows=parseInt(window.innerHeight/pixelSize);
+rows=parseInt(document.documentElement.scrollHeight/pixelSize);
 cols=parseInt(window.innerWidth/pixelSize);
 gridContainer.innerHTML = '';
 init();

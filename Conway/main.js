@@ -151,10 +151,17 @@ function draw_extra_elements(){
 
     // info button
     const info_button = document.getElementById('0_'+(cols-1));
-    info_button.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100% margin: 3px; margin:auto;"fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16"> <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2"/> </svg>'
+    info_button.innerHTML='<svg xmlns="http://www.w3.org/2000/svg"style="width: 90%; height: 90%;" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16"> <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/> </svg>'
     info_button.style.width = window.innerWidth/cols + 'px';
     info_button.style.height = window.innerHeight/rows + 'px';
     info_button.style.backgroundColor = back_color;
+
+    info_button.onclick = function(){
+        if(play)
+            play_pause();
+        reset();
+        applyRules();
+    }
 
 }
 

@@ -14,7 +14,8 @@
 </head>
 <body class="d-flex h-100 text-center">
     <table id="gridContainer"></table>
-    <div class="d-flex w-100 h-100 p-3 mx-auto flex-column" style="background-color: rgba(51,51,51,0.75)">
+    <div class="back_color"></div>
+    <div class="d-flex w-100 h-100 p-3 mx-auto flex-column">
         <header class="mb-auto p-3">
           <div class="float-md-start container w-auto p-3" style="background-color: white;">
             <h3 class="float-md-start mt-md-0 me-0 me-md-3 mb-0 fw-bold" style="color: #d1711a">Matemáticas</h3>
@@ -37,7 +38,7 @@
             <div class="carousel-inner">
               <div class="carousel-item active">
                 <h1>Introducción</h1>
-                <p>Para la correcta realización del taller es importante tener a mano el siguiente pdf</p>
+                <p>Para la correcta realización del taller es importante tener a mano el siguiente <a target='_blank' href="./docs/Matemáticas-y-Caos.pdf">pdf</a></p>
                 <input type="button" style="background-color: #006484;" value="¡Ya lo tengo!" id="intro_button" class="btn btn-primary" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
               </div>
               <div class="carousel-item">
@@ -73,7 +74,7 @@
                 <p class="mx-5 fs-5">Se considera que el Juego de la vida es un buen ejemplo de emergencia y
                   autoorganización. Es interesante para científicos, matemáticos, economistas y otros observar 
                   cómo <span>patrones complejos pueden provenir de la implementación de reglas muy sencillas.</span></p>
-                <input type="button" style="background-color: #006484; text-align: center;" value="Play" class="btn btn-primary px-4" onclick="window.open('https://www.google.es', '_blank')">
+                <input type="button" style="background-color: #006484; text-align: center;" value="Play" class="btn btn-primary px-4" onclick="window.open('./Conway/index.html', '_blank')">
               </div>
               <div class="carousel-item">
                 <h1></h1>
@@ -102,7 +103,7 @@
         </main>
     -->
         <footer class="mt-auto text-white-50">
-          <div class="mx-auto">
+          <div class="mx-auto" style="margin-top: 1rem;">
             <p>Made with 
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#d1711a" class="bi bi-heart-fill" viewBox="0 0 16 16">
               <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
