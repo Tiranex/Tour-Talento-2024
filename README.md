@@ -1,6 +1,6 @@
 # Tour Talento 2024
 
-La página web esta disponible en: [text](https://tiranex.github.io/Tour-Talento-2024/)
+La página web esta disponible en: https://tiranex.github.io/Tour-Talento-2024/
 
 Este proyecto contiene varias simulaciones interactivas. Aquí hay una descripción de cada una:
 
