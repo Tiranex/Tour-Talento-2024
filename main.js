@@ -176,22 +176,40 @@ let current_index = 0;
 const next = document.getElementById('carousel-next')
 const prev = document.getElementById('carousel-prev')
 
+waiting_time = false;
+function wait(){
+    waiting_time = true;
+    setTimeout(function(){
+        waiting_time = false;
+    }, 800);
+
+}
+
 function next_carr(){
+    if(waiting_time)
+        return;
+
     current_index++;
     if(current_index == 1)
         prev.style.visibility = 'visible';
     if(current_index == 4)
         next.style.visibility = 'hidden';
     update_text();
+    wait();
 }
 
+
 function prev_carr(){
+    if(waiting_time)
+        return;
+    
     current_index--;
     if(current_index == 0)
         prev.style.visibility = 'hidden';
     if(current_index == 3)
         next.style.visibility = 'visible';
     update_text();
+    wait();
 }
 
 next.onclick = next_carr;
